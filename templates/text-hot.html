@@ -1,0 +1,63 @@
+{% extends 'text-base.html' %}
+{% block title %}本周最火-混搭{% endblock %}
+
+{% block content %}
+    {% for art in article.object_list %}
+   <div class="col-md-12 col-sm-12 note-list">
+								<div class="content-head col-md-12 col-sm-12">
+
+									<li><a href="{% url 'author:article' art.article.id %}" target="_blank"><img src="{{ art.article.image }}"  class="img-circle"/></a></li>
+									<li><a href="{% url 'author:article' art.article.id %}" class="fl" target="_blank">{{ art.article.name }}</a></li>
+								</div>
+								<div class="content-z col-md-12 col-sm-12">
+									<div class="content-l col-md-9 col-sm-8 col-xs-12 ">
+										<a class="title" href="{% url 'author:articlelist' art.article.id art.id %}" target="_blank">{{ art.name }}</a>
+										<p>{{ art.desc|truncatechars:30|safe }}</p>
+									</div>
+									<div class="content-r col-md-3  col-sm-4 hidden-xs ">
+										<li><a href="{% url 'author:articlelist' art.article.id art.id %}" target="_blank"><img src="{{ art.image }}"/>	</a></li>
+									</div>
+								</div>
+								<div class="content-footer col-md-12 col-sm-12 col-xs-12">
+									<li><span class="glyphicon glyphicon-eye-open"></span><span>&nbsp;{{ art.click_nums }}</span></li>
+									<li><span class="glyphicon glyphicon-heart-empty"></span><span>&nbsp;{{ art.fav_nums }}</span></li>
+									<li><span class="glyphicon glyphicon-calendar">{{ art.add_time }}</span></li>
+									<li><a href="{% url 'author:articlelist' art.article.id art.id %}"><span class="glyphicon glyphicon-comment"></span></a><span>&nbsp;{{ art.get_comments_nums }}</span></li>
+
+								</div>
+					</div>
+    {% endfor %}
+<div class="row col-md-12 col-sm-12 col-xs-12">
+
+    <nav aria-label="Page navigation" style="text-align:center">
+                              <ul class="pagination">
+                                    {% if article.has_previous %}
+                                    <li class="long"><a href="?{{ article.previous_page_number.querystring }}"
+                                                        class="long">上一页</a></li>
+                                {% endif %}
+                                {% for page in article.pages %}
+                                    {% if page %}
+                                        {% ifequal page article.number %}
+                                            <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                        {% else %}
+                                            <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                        {% endifequal %}
+                                    {% else %}
+                                        <li class="none"><a href="">...</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if article.has_next %}
+                                    <li class="long"><a href="?{{ article.next_page_number.querystring }}">下一页</a>
+                                    </li>
+                                {% endif %}
+                                </ul>
+                        </nav>
+
+</div>
+{% endblock %}
+
+
+
+
+
+

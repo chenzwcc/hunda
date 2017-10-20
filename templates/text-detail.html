@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<meta charset="UTF-8">
+		<title>文章标题-混搭</title>
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/usercenter-info.css"/>
+
+
+
+
+	</head>
+	<body>
+		
+		<!--
+        	内容头部
+        -->
+       
+
+		<div class="navbar navbar-inverse" id="top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				    </button>
+					<a href="{% url 'index' %}" class="navbar-brand"><b>混搭</b></a>
+				</div>
+                {% if request.user.is_authenticated %}
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="col-md-1"></div>
+					<ul class="nav navbar-nav">
+				        <li ><a href="{% url 'index' %}">首页 <span class="sr-only">(current)</span></a></li>
+				        <li><a href="#">关于<span class="sr-only">(current)</span> </a></li>
+                        	<li><a href="{% url 'user:message' %}">{% if message == 'message' %}有新消息{% else %}消息{% endif %}<span class="sr-only">(current)</span></a></li>
+					        <li class="dropdown">
+					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">收藏 <span class="caret"></span></a>
+					          <ul class="dropdown-menu">
+					            <li><a href="{% url 'user:fav_article' %}">收藏的文章</a></li>
+					            <li><a href="{% url 'user:fav_author' %}">收藏的作者</a></li>
+					          </ul>
+					        </li>
+				    </ul>
+				    <form id="search_form" class="navbar-form navbar-left" action="{% url 'index' %} " method="get">
+				       	<div class="form-group">
+
+				        		<input name="keywords" type="text" class="form-control search" placeholder="搜索">
+
+				        </div>
+		      		</form>
+
+
+                    <ul class="nav navbar-nav navbar-right">
+				    	<li class="dropdown">
+				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ request.user.nick_name }}<span class="caret"></span></a>
+				        	<ul class="dropdown-menu">
+					            <li><a href="{% url 'user:user_article' %}">我的主页</a></li>
+					            <li><a href="{% url 'user:fav_article' %}">收藏的文章</a></li>
+					            <li><a href="{% url 'user:fav_author' %}">喜欢的作者</a></li>
+					            <li><a href="{% url 'user:info' %}">设置</a></li>
+					            <li><a href="{% url 'user:management' %}">退出用户</a></li>
+				          	</ul>
+						</li>
+				    	<li><a href="{% url 'user:write' %}">写文章</a></li>
+				    </ul>
+				</div>
+               {% else %}
+               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="col-md-1"></div>
+					<ul class="nav navbar-nav">
+				        <li class="active"><a href="{% url 'index' %}">首页 <span class="sr-only">(current)</span></a></li>
+				   </ul>
+				   <form id="search_form" class="navbar-form navbar-left" action="{% url 'index' %} " method="get">
+				       	<div class="form-group">
+
+				        		<input name="keywords" type="text" class="form-control search" placeholder="搜索">
+
+				        </div>
+		      		</form>
+		      		<ul class="nav navbar-nav navbar-right">
+				        <li><a href="{% url 'login' %}">登录</a></li>
+				        <li><a href="{% url 'register' %}">注册</a></li>
+				    </ul>
+               </div>
+				{% endif %}
+			</div>
+		</div>
+		<!--内容-->
+		
+			<div class="container">
+				<div class="row">
+					<div class="col-md-offset-2 col-sm-offset-1   col-md-8 col-sm-10 col-xs-12 ">
+
+                        <h1 class="text-center">{{ articl.name }}</h1>
+						<div class="text-detail col-md-12 col-sm-12 col-xs-12 text-center">		
+							<h4><span>作者:{{ articl.article }}</span></h4>
+						</div>
+						<div class="text-context  col-md-12 col-sm-12 col-xs-12" >
+                            <div class="html_content render_con">
+                                 {{ articl.content|safe }}
+                            </div>
+
+						</div>
+
+                        <div class=" col-md-12 col-sm-12 col-xs-12 ">
+                            <div class="col-md-2 col-sm-2 col-xs-3">
+									<div class="btn-group" id="jsLeftBtn">
+											{% if has_article_fav %}<button type="button" class="btn btn-default glyphicon glyphicon-heart-empty"><span>文章已收藏</span></button>
+                                            {% else %}<button type="button" class="btn btn-default glyphicon glyphicon-heart-empty"><span>收藏文章</span></button>
+                                            {% endif %}
+									</div>
+                            </div>
+						</div>
+						<!--
+                        	作者：offline
+                        	时间：2017-09-26
+                        	描述：作者区
+                        -->
+						<div class="TAdetail-list col-md-12 col-sm-12 ">		
+							<div class="row">
+								<div class="people-head col-md-2 col-sm-3  hidden-xs">
+									<li><a href="{% url 'author:article' author.id %}" target="_blank"><img src="{{ author.image }}"  class="img-circle"/></a></li>
+								</div>
+								<div class="people-z col-md-8 col-sm-7 col-xs-9">
+									<h1 class="col-md-8 col-sm-8"><a href="{% url 'author:article' author.id %}">{{ author.name }}</a></h1>
+									<ul class="col-md-8 col-sm-8">
+										<li>加入时间:<span>{{ author.write_time }}</span></li>
+                                        <li>最受欢迎的作品:<span>{% for huan in huan_article %}<<<a href="{% url 'author:articlelist' huan.article.id huan.id %}"><span>{{ huan.name }}</span></a>>>,</span>>{% endfor %}</li>
+										<li>热点作品:{% for hot in hot_article %}<<<a href="{% url 'author:articlelist' hot.article.id hot.id %}"><span>{{ hot.name }}</span></a>>>,{% endfor %}</li>
+									</ul>
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-3">
+									<div class="btn-group " id="jsRightBtn">
+											{% if has_author_fav %}<button type="button" class="btn btn-default glyphicon glyphicon-plus"><span>&nbsp;已收藏</span></button>
+                                        {% else %}<button type="button" class="btn btn-default glyphicon glyphicon-plus"><span>&nbsp;收藏</span></button>
+                                        {% endif %}
+									</div>           			
+								</div>
+							</div>
+						</div>
+						
+						<!--
+                        	作者：offline
+                        	时间：2017-09-26
+                        	描述：评论区
+                        -->
+                         <!--发布评论-->
+                        <div class="TAdetail-list col-md-12 col-sm-12 ">
+                        	<div class="row">
+                        		<div class="col-md-12 col-sm-12 col-xs-12">
+                        			<div class="form-group">
+                        				<textarea class="form-control" id="js-pl-textarea"  rows="5" placeholder="参与评论(保持在300字以内)"></textarea>
+
+                                    </div>
+                                    <div class="form-group col-md-offset-10 col-sm-offset-9  col-xs-offset-9 col-md-2 col-sm-2 col-xs-2">
+                                            <button type="button" id="js-pl-submit" class="btn btn-default"  aria-haspopup="true" aria-expanded="false"><span>发表评论</span></button>
+
+                                            <p class="global-errortip js-global-error"></p>
+                                        </div>
+                        			
+                        		</div>
+
+
+
+                        	</div>
+						</div>
+
+
+
+						
+						<div id="course_note" class="TAdetail-list col-md-12 col-sm-12 ">
+	                        <ul class="mod-post" id="comment-list">
+	                            {% for comments in all_comments %}
+	                            <li class="post-row">
+	                                <div class="media">
+	                                    <span target="_blank"><img src='{{ comments.user.image }}' width='40' height='40' /></span>
+	                                </div>
+	                                <div class="bd">
+	                                    <div class="tit">
+	                                        <span target="_blank">{{ comments.user }}</span>
+	                                    </div>
+	                                    <p class="cnt">{{ comments.comments }}</p>
+	                                    <div class="footer clearfix">
+	                                        <span title="创建时间" class="l timeago">时间：{{ comments.add_time }}</span>
+	                                    </div>
+	                                </div>
+	                            </li>
+	                            {% endfor %}
+
+	                        </ul>
+	                    </div>
+
+
+					</div>
+					
+				</div>
+			</div>
+			<a href="javascript:;" class="totop"></a>
+
+
+
+    <script>
+
+
+
+
+
+//收藏
+//收藏
+function add_fav(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url 'author:add_fav' %}",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="/login/";
+                }else{
+                    alert(data.msg)
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}
+$('#jsLeftBtn').on('click', function(){
+    add_fav($(this), {{ articl.id }}, 1);
+     window.location.reload();
+});
+
+$('#jsRightBtn').on('click', function(){
+    add_fav($(this), {{ author.id }}, 2);
+     window.location.reload();
+});
+
+//回到顶部
+$(function(){
+				$(window).scroll(function(){
+					var nowTop=$(document).scrollTop();
+					if(nowTop>300){
+						$('.totop').show()
+
+					}
+					else{
+						$('.totop').hide()
+					}
+				});
+				$('.totop').click(function(){
+					$('html,body').animate({
+						'scrollTop':0,
+					})
+				})
+
+		});
+		
+
+//添加评论
+    $('#js-pl-submit').on('click', function(){
+        var comments = $("#js-pl-textarea").val()
+        if(comments == ""){
+            alert("评论不能为空")
+            return
+        }
+         $.ajax({
+            cache: false,
+            type: "POST",
+            url:"{% url 'author:add_comment' %}",
+            data:{'article_id':{{ articl.id }}, 'comments':comments},
+            async: true,
+            beforeSend:function(xhr, settings){
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            },
+            success: function(data) {
+                if(data.status == 'fail'){
+                    if(data.msg == '用户未登录'){
+                        window.location.href="/login/";
+                    }else{
+                        alert(data.msg);
+                    }
+
+                }else if(data.status == 'success'){
+                    window.location.reload();//刷新当前页面.
+                }
+            },
+        });
+    });
+
+
+
+
+</script>
+	</body>
+</html>

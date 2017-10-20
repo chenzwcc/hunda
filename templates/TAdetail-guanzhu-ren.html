@@ -1,0 +1,57 @@
+{% extends 'author-fav-base.html' %}
+{% block title %}{{ author.name }}收藏的作者{% endblock %}
+{% block content %}
+    {% for author in fav_Author.object_list %}
+    <div class="col-md-12 col-sm-12 people-list">
+
+                <div class="row">
+                    <div class="people-head col-md-2 col-sm-3  hidden-xs">
+
+                        <li><a href="{% url 'author:article' author.id %}" target="_blank"><img src="{{ author.image }}"  class="img-circle"/></a></li>
+
+                    </div>
+                    <div class="people-z col-md-9 col-sm-8 col-xs-9">
+                        <h1 class="col-md-8 col-sm-8"><a href="{% url 'author:article' author.id %}">{{ author.name }}</a></h1>
+                        <ul class="col-md-8 col-sm-8">
+                            <li>加入时间:<span>{{ author.write_time }}</span></li>
+                            <li>浏览量:<span>{{ author.click_nums }}</span></li>
+                            <li>收藏数:<span>{{ author.fav_nums }}</span></li>
+                        </ul>
+                    </div>
+
+                    </div>
+
+    </div>
+    {% endfor %}
+    <div class="row col-md-12 col-sm-12 col-xs-12">
+
+        <nav aria-label="Page navigation" style="text-align:center">
+          <ul class="pagination">
+                {% if fav_Author.has_previous %}
+                <li class="long"><a href="?{{ fav_Author.previous_page_number.querystring }}"
+                                    class="long">上一页</a></li>
+            {% endif %}
+            {% for page in fav_Author.pages %}
+                {% if page %}
+                    {% ifequal page fav_Author.number %}
+                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                    {% else %}
+                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                    {% endifequal %}
+                {% else %}
+                    <li class="none"><a href="">...</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if fav_Author.has_next %}
+                <li class="long"><a href="?{{ fav_Author.next_page_number.querystring }}">下一页</a>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+{% endblock %}
+
+
+
+

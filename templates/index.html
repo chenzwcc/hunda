@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>首页-混搭</title>
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/static/css/usercenter-info.css" />
+
+		
+	</head>
+	<body>
+		<!--
+        	内容头部
+        -->
+       
+		<div class="navbar navbar-inverse" id="top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				    </button>
+					<a href="{% url 'index' %}" class="navbar-brand"><b>混搭</b></a>
+				</div>
+                {% if request.user.is_authenticated %}
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="col-md-1"></div>
+					<ul class="nav navbar-nav">
+				        <li class="active"><a href="{% url 'index' %}">首页 <span class="sr-only">(current)</span></a></li>
+				        <li><a href="https://github.com/chenzwcc?tab=repositories">关于<span class="sr-only">(current)</span> </a></li>
+                        	<li><a href="{% url 'user:message' %}">{% if message == 'message' %}有新消息{% else %}消息{% endif %}<span class="sr-only">(current)</span></a></li>
+					        <li class="dropdown">
+					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">收藏 <span class="caret"></span></a>
+					          <ul class="dropdown-menu">
+					            <li><a href="{% url 'user:fav_article' %}">收藏的文章</a></li>
+					            <li><a href="{% url 'user:fav_author' %}">收藏的作者</a></li>
+					          </ul>
+					        </li>
+				    </ul>
+				    <form id="search_form" class="navbar-form navbar-left" action="{% url 'index' %} " method="get">
+				       	<div class="form-group">
+
+				        		<input name="keywords" type="text" class="form-control search" placeholder="搜索">
+
+				        </div>
+		      		</form>
+
+
+                    <ul class="nav navbar-nav navbar-right">
+				    	<li class="dropdown">
+				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ request.user.nick_name }}<span class="caret"></span></a>
+				        	<ul class="dropdown-menu">
+					            <li><a href="{% url 'user:user_article' %}">我的主页</a></li>
+					            <li><a href="{% url 'user:fav_article' %}">收藏的文章</a></li>
+					            <li><a href="{% url 'user:fav_author' %}">喜欢的作者</a></li>
+					            <li><a href="{% url 'user:info' %}">设置</a></li>
+					            <li><a href="{% url 'user:management' %}">退出用户</a></li>
+				          	</ul>
+						</li>
+				    	<li><a href="{% url 'user:write' %}">写文章</a></li>
+				    </ul>
+				</div>
+               {% else %}
+               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="col-md-1"></div>
+					<ul class="nav navbar-nav">
+				        <li class="active"><a href="{% url 'index' %}">首页 <span class="sr-only">(current)</span></a></li>
+				   </ul>
+				   <form id="search_form" class="navbar-form navbar-left" action="{% url 'index' %} " method="get">
+				       	<div class="form-group">
+
+				        		<input name="keywords" type="text" class="form-control search" placeholder="搜索">
+
+				        </div>
+		      		</form>
+		      		<ul class="nav navbar-nav navbar-right">
+				        <li><a href="{% url 'login' %}">登录</a></li>
+				        <li><a href="{% url 'register' %}">注册</a></li>
+				    </ul>
+               </div>
+				{% endif %}
+			</div>
+		</div>
+
+		<!--
+        	作者：offline
+        	时间：2017-09-26
+        	描述：轮播图
+        -->
+        <div class="container">
+        	<div class="row">
+        		<div class="col-md-offset-1 col-sm-offset-1 col-md-8 col-sm-8 col-xs-12">
+        			<div id="myCarousel" class="carousel slide carousel-bg">
+						<!-- 轮播（Carousel）指标 -->
+						<ol class="carousel-indicators">
+						    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						    <li data-target="#myCarousel" data-slide-to="1"></li>
+						    <li data-target="#myCarousel" data-slide-to="2"></li>
+						</ol>   
+						<!-- 轮播（Carousel）项目 -->
+						<div class="carousel-inner">
+
+						    <div class="item active">
+						        <img src="/static/img/001.jpg" class="img-responsive" alt="First slide">
+						    </div>
+
+						    <div class="item">
+						        <img src="/static/img/0022.jpg" class="img-responsive" alt="Second slide">
+						    </div>
+						    <div class="item">
+						        <img src="/static/img/003.jpg" class="img-responsive" alt="Third slide">
+						    </div>
+						</div>
+						<!-- 轮播（Carousel）导航 -->
+						<a class="carousel-control left" href="#myCarousel" 
+						    data-slide="prev">&lsaquo;
+						</a>
+						<a class="carousel-control right" href="#myCarousel" 
+						    data-slide="next">&rsaquo;
+						</a>
+					</div>
+					
+
+					{% for art in article.object_list %}
+					<div class="col-md-12 col-sm-12 note-list">
+								<div class="content-head col-md-12 col-sm-12">
+									
+									<li><a href="{% url 'author:article' art.article.id %}" target="_blank"><img src="{{ art.article.image }}"  class="img-circle"/></a></li>
+									<li><a href="{% url 'author:article' art.article.id %}" class="fl" target="_blank">{{ art.article.name }}</a></li>
+								</div>
+								<div class="content-z col-md-12 col-sm-12">
+									<div class="content-l col-md-9 col-sm-8 col-xs-12 ">
+										<a class="title" href="{% url 'author:articlelist' art.article.id art.id %}" target="_blank">{{ art.name }}</a>
+										<p>{{ art.desc|truncatechars:30|safe }}</p>
+									</div>
+									<div class="content-r col-md-3  col-sm-4 hidden-xs ">
+										<li><a href="{% url 'author:articlelist' art.article.id art.id %}" target="_blank"><img src="{{ art.image }}"/>	</a></li>
+									</div>
+								</div>
+								<div class="content-footer col-md-12 col-sm-12 col-xs-12">
+									<li><span class="glyphicon glyphicon-eye-open"></span><span>&nbsp;{{ art.click_nums }}</span></li>
+									<li><span class="glyphicon glyphicon-heart-empty"></span><span>&nbsp;{{ art.fav_nums }}</span></li>
+									<li><span class="glyphicon glyphicon-calendar">{{ art.add_time }}</span></li>
+									<li><a href="{% url 'author:articlelist' art.article.id art.id %}"><span class="glyphicon glyphicon-comment"></span></a><span>&nbsp;{{ art.get_comments_nums }}</span></li>
+									
+								</div>
+					</div>
+					{% endfor %}
+
+						<!--
+                    	作者：offline
+                    	时间：2017-09-25
+                    	描述：分页
+                    		-->
+					<div class="row col-md-12 col-sm-12 col-xs-12">
+							
+                        <nav aria-label="Page navigation" style="text-align:center">
+                              <ul class="pagination">
+                                    {% if article.has_previous %}
+                                    <li class="long"><a href="?{{ article.previous_page_number.querystring }}"
+                                                        class="long">上一页</a></li>
+                                {% endif %}
+                                {% for page in article.pages %}
+                                    {% if page %}
+                                        {% ifequal page article.number %}
+                                            <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                        {% else %}
+                                            <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                        {% endifequal %}
+                                    {% else %}
+                                        <li class="none"><a href="">...</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if article.has_next %}
+                                    <li class="long"><a href="?{{ article.next_page_number.querystring }}">下一页</a>
+                                    </li>
+                                {% endif %}
+                                </ul>
+                        </nav>
+
+					</div>
+
+        			
+        		</div>
+        		<div class="col-md-3 col-sm-3 hidden-xs slider">
+        			<ul class="nav nav-pills nav-stacked">
+        				<li><a href="{% url 'article:newArticlle' %}"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;最新发表</a></li>
+	 					<li><a href="{% url 'article:hotArticlle' %}"><span class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp;大家都在看</a></li>
+	                    <li><a href="{% url 'article:commentsArticlle' %}"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;收藏最多的排行</a></li>
+	 				</ul>
+	 				<div class="col-md-12">
+	 					<h4>站长推荐</h4>
+                        {% for article in article_list %}
+	 					<div class="col-md-12 zhanzhang">
+	 						<img src="{{ article.article.image }}" class="img-circle" width="25px" height="25px"/>
+	 						<a href="{% url 'author:article' article.article.id %}"><span>{{ article.article }}</span></a>
+	 					</div>
+                        {% endfor %}
+
+	 				</div>
+        		</div>
+        		
+        	</div>
+        </div>
+        
+        <a href="javascript:;" class="totop"></a>
+        
+<script type="text/javascript">
+	$(function(){
+		$(window).scroll(function(){
+			var nowTop=$(document).scrollTop();
+			if(nowTop>300){
+				$('.totop').show()
+
+			}
+			else{
+				$('.totop').hide()
+			}
+		});
+		$('.totop').click(function(){
+			$('html,body').animate({
+				'scrollTop':0,
+			})
+		})
+
+	})
+</script>
+        	
+	</body>
+</html>

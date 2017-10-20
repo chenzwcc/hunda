@@ -1,0 +1,68 @@
+{% extends 'user-base.html' %}
+{% block title %}{{ user }}的主页{% endblock %}
+{% block custom %}
+<ol class="breadcrumb">
+        <li><a href="{% url 'index' %}">首页</a></li>
+        <li><a href="{% url 'user:info' %}">个人中心</a></li>
+        <li class="active">我的消息</li>
+</ol>
+{% endblock %}
+{% block content %}
+    <div class="messagelist">
+        <h3>以下是未读消息：</h3>
+        {% for message in message_list %}
+        <div class="message">
+            <li class="glyphicon glyphicon-time"><span>&nbsp;{{ message.add_time }}</span></li>
+            <li><a href="{% url 'user:message_detail' message.id %}">{{ message.get_message }}...</a></li>
+        </div>
+        {% endfor %}
+        </br>
+        </br>
+        </br>
+        </br>
+        <hr>
+        <h3>以下已读消息：</h3>
+        {% for message in mymessages.object_list %}
+        <div class="message">
+            <li class="glyphicon glyphicon-time"><span>&nbsp;{{ message.add_time }}</span></li>
+            <li><a href="{% url 'user:message_detail' message.id %}">{{ message.get_message }}...</a></li>
+        </div>
+        {% endfor %}
+        <div class="row col-md-12 col-sm-12 col-xs-12">
+
+                <nav aria-label="Page navigation" style="text-align:center">
+                      <ul class="pagination">
+                            {% if mymessages.has_previous %}
+                            <li class="long"><a href="?{{ mymessages.previous_page_number.querystring }}"
+                                                class="long">上一页</a></li>
+                        {% endif %}
+                        {% for page in mymessages.pages %}
+                            {% if page %}
+                                {% ifequal page mymessages.number %}
+                                    <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                {% else %}
+                                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                {% endifequal %}
+                            {% else %}
+                                <li class="none"><a href="">...</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if mymessages.has_next %}
+                            <li class="long"><a href="?{{ mymessages.next_page_number.querystring }}">下一页</a>
+                            </li>
+                        {% endif %}
+                        </ul>
+                </nav>
+
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+

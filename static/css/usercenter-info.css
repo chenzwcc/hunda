@@ -1,0 +1,179 @@
+.form-group .img-thumbnail{
+	width: 200px;
+	height:200px ;
+}
+.img-circle{
+	width: 25px;
+	height: 25px;
+}
+
+body li{
+	list-style-type: none;
+}
+.note-list{
+	margin: 10px auto;
+
+}
+.content-head{
+	margin-top: 20px;
+	float: left;
+
+}
+.content-head li {
+	display: inline-block;
+	
+}
+.content-head li .fl{
+	margin-left: 20px;
+}
+.content-z{
+	margin-top: 10px;
+	float: left;
+	
+}
+.content-l{
+	float: left;
+	
+	
+}
+.content-r{
+	float: right;
+	
+	
+}
+.content-r img{
+	height: 90px;
+	
+}
+.content-footer{
+	float: left;
+	margin-top: 5px;
+	border-bottom: 1px solid #E3E3E3;
+	
+}
+.content-footer li{
+	display: inline-block;
+	margin-left: 20px;
+}
+
+.totop{
+			width:30px;
+			height:30px;
+			background:url(../img/up.png) center center no-repeat #67B168;
+			border-radius:50%;
+			position:fixed;
+			right:30px;
+			bottom:30px;
+			display:none;
+		}
+
+.people-list{
+	margin: 10px auto;
+	
+	border-bottom:1px solid #e3e3e3;
+
+}
+
+.people-head .img-circle{
+	width: 100px;
+	height: 100px;
+}
+.people-list .delete{
+	
+
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    width: 31px;
+    height: 50px;
+    background: url(../img/pic12.png) no-repeat center center;
+    cursor: pointer;
+
+}
+.people-list .delete:hover{
+	background: url(../img/pic13.png) no-repeat center center;
+}
+
+.TAdetail-list{
+	margin: 10px auto;
+		
+}
+
+.nav_custom{
+	margin: 10px auto;
+	border-bottom:1px solid #e3e3e3;
+}
+
+
+.text-detail{
+	margin: 20px auto;
+	
+}
+.text-context{
+	margin: 0 auto;
+	border-bottom: 1px solid #e1e1e1;
+}
+.text-context p{
+	margin: 0 0 15px;
+}
+.mod-post .post-row{border-bottom:1px solid #d9dde1;overflow:hidden;padding:24px 0 16px 24px}
+.mod-post .post-row .media{float:left;width:40px;margin-right:10px}
+.mod-post .post-row .media img{
+	display:block;
+	-moz-border-radius:20px;
+	-webkit-border-radius:20px;
+	-o-border-radius:20px;
+	-ms-border-radius:20px
+	;border-radius:20px
+	}
+
+.mod-post .post-row .bd{
+	margin-left:60px;
+	margin-right:20px
+}
+.mod-post .post-row .tit{
+	line-height:1.2;
+	margin-bottom:8px
+}
+
+.mod-post .post-row .footer{
+	color:#93999f;
+	font-size:12px;
+	margin-top:15px;
+}
+
+
+.messagelist {
+  
+    
+    overflow: hidden;
+    line-height: 150%;
+    color: #585858;
+  
+}
+.messagelist .message{
+	height: 70px;
+	
+	border-bottom: 1px solid #eaeaea;
+}
+
+.messagelist .message li{
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
+
+
+.carousel-bg img{
+	display: block;
+	width:100%;
+height:auto;
+}
+
+.slider{
+	margin-top: 50px;
+}
+.zhanzhang{
+	margin: 15px auto;
+	
+}
+

@@ -1,0 +1,42 @@
+/*将默认的标签间距设为零   */
+body ,ul,p,h1,h2,h3,h4,h5,h6,dl,dd,input,select,form{
+	margin: 0;
+	padding: 0;
+}
+/*让h标签内的字体大小继承body的*/
+h1,h2,h3,h4,h5,h6{
+	font-size: 100%;
+}
+/* 去掉项目的默认图标 */
+ul{
+	list-style: none;
+}
+/* 将em包括的内容设为正常*/
+em{
+	font-style: normal;
+}
+/*去掉链接下的下划线*/
+a{
+	text-decoration: none;
+}
+/*去掉IE下的图片做链接时产生的边框*/
+img{
+	border: none;
+}
+/*清除margin-top塌陷以及浮动*/
+.clearfix:before,.clearfix:after{
+	content: '';
+	display: table;
+}
+.clearfix:after{
+	clear: both;
+}
+.clerfix{
+	zoom: 1;
+}
+.fl{
+	float: left;
+}
+.fr{
+	float: right;
+}

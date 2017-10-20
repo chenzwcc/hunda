@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>写文章-混搭</title>
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-markdown.min.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css"/>
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">  
+
+	</head>
+	<body>
+		<!--
+        	内容头部
+        -->
+
+		<div class="navbar navbar-inverse" id="top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				    </button>
+					<a href="{% url 'index' %}" class="navbar-brand"><b>混搭</b></a>
+				</div>
+                {% if request.user.is_authenticated %}
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="col-md-1"></div>
+					<ul class="nav navbar-nav">
+				        <li ><a href="{% url 'index' %}">首页 <span class="sr-only">(current)</span></a></li>
+				        <li><a href="#">关于<span class="sr-only">(current)</span> </a></li>
+                        	<li><a href="{% url 'user:message' %}">{% if message == 'message' %}有新消息{% else %}消息{% endif %}<span class="sr-only">(current)</span></a></li>
+					        <li class="dropdown">
+					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">收藏 <span class="caret"></span></a>
+					          <ul class="dropdown-menu">
+					            <li><a href="{% url 'user:fav_article' %}">收藏的文章</a></li>
+					            <li><a href="{% url 'user:fav_author' %}">收藏的作者</a></li>
+					          </ul>
+					        </li>
+				    </ul>
+				    <form id="search_form" class="navbar-form navbar-left" action="{% url 'index' %} " method="get">
+				       	<div class="form-group">
+
+				        		<input name="keywords" type="text" class="form-control search" placeholder="搜索">
+
+				        </div>
+		      		</form>
+
+
+                    <ul class="nav navbar-nav navbar-right">
+				    	<li class="dropdown">
+				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ request.user.nick_name }}<span class="caret"></span></a>
+				        	<ul class="dropdown-menu">
+					            <li><a href="{% url 'user:user_article' %}">我的主页</a></li>
+					            <li><a href="{% url 'user:fav_article' %}">收藏的文章</a></li>
+					            <li><a href="{% url 'user:fav_author' %}">喜欢的作者</a></li>
+					            <li><a href="{% url 'user:info' %}">设置</a></li>
+					            <li><a href="{% url 'user:management' %}">退出用户</a></li>
+				          	</ul>
+						</li>
+				    	<li class="active"><a href="{% url 'user:write' %}">写文章</a></li>
+				    </ul>
+				</div>
+               {% else %}
+               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="col-md-1"></div>
+					<ul class="nav navbar-nav">
+				        <li class="active"><a href="{% url 'index' %}">首页 <span class="sr-only">(current)</span></a></li>
+				   </ul>
+				   <form id="search_form" class="navbar-form navbar-left" action="{% url 'index' %} " method="get">
+				       	<div class="form-group">
+
+				        		<input name="keywords" type="text" class="form-control search" placeholder="搜索">
+
+				        </div>
+		      		</form>
+		      		<ul class="nav navbar-nav navbar-right">
+				        <li><a href="{% url 'login' %}">登录</a></li>
+				        <li><a href="{% url 'register' %}">注册</a></li>
+				    </ul>
+               </div>
+				{% endif %}
+			</div>
+		</div>
+
+		
+		<!--内容区-->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-offset-2 col-sm-offset-2 col-md-8 col-sm-8 col-xs-12">
+					<form id="topic_form">
+						<div class="from-group">
+                            <textarea style="resize: none;margin-bottom: 20px" autofocus="" class="form-control"
+                                      rows="1" id="title"
+                                      name="title" placeholder="标题字数 尽量不超过20 字"></textarea>
+                        </div>
+					 	<div class="from-group">
+				        	<textarea name="content" data-provide="markdown" data-iconlibrary="fa" rows="20" id="editor"></textarea>
+				    	</div>
+
+
+                        <button type="button" class="btn btn-primary" id="topic_sub" >提交</button>
+
+						<input type="hidden" id="topic_tags" name="topic_tags" value="">
+					</form>
+					
+                    </div>
+
+                <div class="col-md-offset-2 col-sm-offset-2 col-md-8 col-sm-8 col-xs-12">
+                    <form  id="up_form" action="{% url 'user:uploadArt' %}"
+                          method="post" enctype="multipart/form-data">
+
+                        <h4 style="color: red">目前仅支持提交后再上传图片</h4>
+                        <div class="form-group" >
+                            <label for="image" >上传封面图</label>
+
+                                <input type="file" id="image_up" name="file">
+
+                        </div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+
+				</div>
+			</div>
+
+
+		<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript" src="/static/js/markdown.js"></script>
+		<script type="text/javascript" src="/static/js/to-markdown.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap-markdown.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap-markdown.fr.js"></script>
+
+		<script type="text/javascript">
+
+        //显示中文提示
+	    (function ($) {
+	      $.fn.markdown.messages.zh = {
+	      	'Bold':"粗体",
+	        'Italic': "斜体",
+	        'Heading': "标题",
+	        'URL/Link': "链接",
+	        'Image': "图片",
+	        'List': "列表",
+	        'Unordered List': "无序列表",
+	        'Ordered List': "有序列表",
+	        'Code': "代码",
+	        'Quote': "引用",
+	        'Preview': "预览",
+	        'strong text': "粗体",
+	        'emphasized text': "强调",
+	        'heading text': "标题",
+	        'enter link description here': "输入链接说明",
+	        'Insert Hyperlink': "URL地址",
+	        'enter image description here': "输入图片说明",
+	        'Insert Image Hyperlink': "图片URL地址",
+	        'enter image title here': "在这里输入图片标题",
+	        'list text here': "这里是列表文本",
+	        'code text here': "这里输入代码",
+	        'quote here': "这里输入引用文本"
+	      };
+	    }(jQuery));
+	    //初始化编辑器
+	    $("#editor").markdown({
+
+	        autofocus: true,
+	        language: 'zh',
+
+	    });
+
+
+
+
+
+         //文件上传
+        function fileUpload(fileObj) {
+            var data = new FormData();
+            data.append("file", fileObj);
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", "{% url 'user:uploadArt' %}", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    res = JSON.parse(xhr.responseText);
+                    if (res.status === '1') {
+                        alert("上传失败")
+                    }
+                    if (res.status === '0') {
+                        // 将图片链接添加到原来的后面
+                        old_val = simplemde.value()
+                        new_val = old_val + res.msg
+                        simplemde.value(new_val)
+                    }
+                }
+            };
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xhr.send(data);
+        }
+        // 提交
+        $('#topic_sub').on('click', function () {
+
+
+            title = $('#title').val();
+            if (title === '' || title.length > 20) {
+                alert('标题不符合规范');
+                return
+            }
+
+
+
+            content = $('#editor').val();
+            if (content === '') {
+                alert('内容不能为空');
+                return
+            }
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "{% url 'user:write' %}",
+                data: { 'title': title, 'content': content,},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == '1') {
+                        alert('发布失败')
+                    }
+                    else if (data.status == '0') {
+                        alert('发布成功,请上传封面图');
+
+                        window.location.reload();
+                    }
+                },
+            });
+
+        })
+
+            $(function () {
+            //　上传图片
+            $('#image_up').on('change', function () {
+                $('#up_form').submit()
+            })
+                })
+			</script>
+
+	</body>
+</html>
